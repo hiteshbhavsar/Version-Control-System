@@ -1,0 +1,78 @@
+<html>
+
+<script>
+$(function() {
+  $('#jstree_demo').jstree({
+  "core" : {
+    "animation" : 0,
+    "check_callback" : true,
+    "themes" : { "stripes" : true },
+    'data' : {
+      'url' : function (node) {
+        return node.id === '#' ?
+          'ajax_demo_roots.json' : 'ajax_demo_children.json';
+      },
+      'data' : function (node) {
+        return { 'id' : node.id };
+      }
+    }
+  },
+  "types" : {
+    "#" : {
+      "max_children" : 1,
+      "max_depth" : 4,
+      "valid_children" : ["root"]
+    },
+    "root" : {
+      "icon" : "/static/3.3.8/assets/images/tree_icon.png",
+      "valid_children" : ["default"]
+    },
+    "default" : {
+      "valid_children" : ["default","file"]
+    },
+    "file" : {
+      "icon" : "glyphicon glyphicon-file",
+      "valid_children" : []
+    }
+  },
+  "plugins" : [
+    "contextmenu", "dnd", "search",
+    "state", "types", "wholerow"
+  ]
+});
+});
+</script>
+<body>
+  <div class="well" id="treeview_div">
+  	<ul>
+  		<li>Electronics
+  		  <ul>
+  			<li>Mobile
+  				<ul>
+  					<li>Samsung</li>
+  					<li>Apple</li>
+  				</ul>
+  			</li>
+  			<li>Laptop
+  				<ul>
+  					<li>Dell</li>
+  					<li>Computer Peripherals
+  						<ul>
+  							<li>Printers</li>
+  							<li>Monitor</li>
+  						</ul>
+  					</li>
+  					<li>Keyboard</li>
+  				</ul>
+  			</li>
+  		  </ul>
+  		</li>
+  	</ul>
+  </div>
+</body>
+<link rel="stylesheet" href="http://static.jstree.com/3.0.2/assets/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" href="http://static.jstree.com/3.0.2/assets/dist/themes/default/style.min.css" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.3/themes/default-dark/style.min.css">
+<script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.3/jstree.min.js"></script>
+</html>

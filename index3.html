@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+    <!-- Custom Fonts -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <meta charset="utf-8">
+    <title></title>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        String.prototype.replaceAll = function(search, replacement) {
+            var target = this;
+            return target.split(search).join(replacement);
+        };
+
+
+          $('#checkout_btn').on('click',function(){
+            if($('#file_path').attr('value')==null)
+            {
+              alert("Please enter the path where the code needs to be checkout");
+            }
+            else {
+              var path=$('#file_path').attr('value').toString().replaceAll('\\','/');
+              makeAJAXcall(path);
+            }
+          });
+
+          function makeAJAXcall(path)
+          {
+            console.log(path);
+            $.ajax({
+                  url: "http://localhost:8080/vcs/push/",
+                  type: "POST",
+                  dataType:'json',
+                  contentType: "application/json",
+                  data:JSON.stringify({"name": path}),
+                  success: function(data){
+                      console.log("sucess");
+                	  console.log(JSON.stringify(data));
+                  },
+                  error : function(res){
+                  console.log("error");
+                  alert("Enter correct path");
+                  console.log(res);
+                  }
+
+                 });
+          }
+          $('#file_path').on('change',function(){
+            var filePath=$(this).value;
+            console.log(filePath.toString().replaceAll('\\','/'));
+          });
+          $('#flup').on('change',function ()
+          {
+              var filePath = $(this).attr("baseURI");
+              console.log(filePath);
+              alert(filePath);
+          });
+        });
+
+
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" type="text/javascript">
+
+    </script>
+  </head>
+  <body>
+    <input id="file_path" type="file_path" value="F:\important files\Website practise\Nodejs Code" onchange="" />
+    <input id="checkout_btn" type="button"  value="Checkout">
+    <!--<input id="fileselector" type="file" onchange="browseResult(event)" webkitdirectory directory multiple="false" style="display:none" />
+    <button onclick="getElementById('fileselector').click()">New browse</button>-->
+
+  </body>
+</html>

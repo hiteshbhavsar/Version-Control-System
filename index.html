@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- <h1 align="center" style="color:yellow;"> Generating Checksums</h1> -->
+<h1 align="center" style="color:yellow;"> Generating Checksums</h1>
+<title> NodeJS project </title>
+ <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+<!--     <select autocomplete="off">
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+    </select> -->
+	Enter Text:<br>
+<input type="text" id="txt" name="entertext">
+<button type="button" onclick="sendingdata();">Send</button>
+<br>
+<br>
+  <h1> Repositories </h1>
+  <input type="radio" name="choice" id="checkone" value="0"> 0<br>
+  <input type="radio" name="choice" id="checktwo" value="1"> 1<br>
+  <input type="radio" name="choice" id="checkthree" value="2"> 2<br>
+    <br>
+
+
+    <!-- <a href="C:\Users\hp\Desktop\Siska project final" onClick="setSelect(0);">Set Select to 0</a><br> -->
+
+</head>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"> </script>
+<script>
+function myFunction(){
+//var path = document.getElementById("fileUpload").value;
+$.ajax({
+  url: "http://localhost:8080/vcs/push/",
+  type: "POST",
+  dataType:'json',
+  contentType: "application/json",
+  data:JSON.stringify({"name": ""}),
+  success: function(data){
+      console.log("sucess");
+	  console.log(JSON.stringify(data));
+      jQuery.each( data, function( key, value ) {
+      <!-- alert( key + ": " + value ); -->
+	  $("#result").append(key + ": " + value + '<br>');
+
+	  });
+  },
+  error : function(res){
+  console.log("error");
+  console.log(res);
+  }
+
+ });
+}
+
+<!-- function setSelect(i){
+          $('select').val(i);
+		  $("a").hide();
+        } -->
+function sendingdata(){
+          var inp = $("#txt");
+		  if (inp.val().length > 0 && $('#checkone').is(':checked')) {
+
+}
+
+else
+{
+alert("Enter Some data");
+}
+ }
+
+
+
+</script>
+<div class="container">
+<body>
+     <br>
+  <div >
+
+ </div>
+  <br>
+  <br>
+   <div>
+    <button onclick="myFunction();" style="font-size: 50px;margin-top:0.01px" class="btn btn-primary btn-lg" align="center">Push Repository</button>
+  </div>
+
+  <div id="result"></div>
+  </div>
+
+</body>
+</html>

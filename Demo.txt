@@ -1,0 +1,301 @@
+Filesystem = require('fs');
+// List of all the folder and files in one directory
+var findFileAndFolder, jsFiles, rootDir;
+var folder = [],file_path=[];
+var dir='';var tcase='';
+function findFileAndFolder(dir,tcase='')
+{
+    console.log('Directory searching for'+dir);
+    Filesystem.readdirSync(dir).forEach(function(file) {
+    var stat;
+    stat = Filesystem.statSync("" + dir + "/" + file);
+    if (stat.isDirectory())
+    {
+      var a="" + dir + "/" + file;
+      folder.push(a);
+      console.log("Directory : "+a);
+      return findFileAndFolder(a,tcase);
+    }
+    else //if (file.split('.').pop() === 'js')
+    {
+      console.log("Files : "+"" + dir + "/" + file);
+      return file_path.push("" + dir + "/" + file);
+    }
+  });
+
+  console.log(os.EOL+"Tcase: "+tcase+os.EOL);
+  if(tcase=="client")
+  {
+    console.log('inside Client will display client directory');
+    folder=folder.filter(folder=>!folder.startsWith('./server'));
+    file_path=file_path.filter(file_path=>!file_path.startsWith('./server'));
+
+  }
+  else if(tcase=="server") {
+    console.log('inside server will display server directory');
+    //folder=folder.filter(folder=>!folder.startsWith('./Client'||'Client'));
+    folder=folder.filter(folder=>folder.startsWith('./server'||'server'));
+    //file_path=file_path.filter(file_path=>!file_path.startsWith('./Client'||'Client'));
+    file_path=file_path.filter(file_path=>file_path.startsWith('./server'||'server'));
+
+  }
+return [file_path,folder];
+};
+
+
+
+
+
+
+
+
+
+
+function Write_file(files)
+{
+//./Client/Client1/1Def.txt
+  var fil1=files.slice(0);
+  console.log("Inside write_file function value of fil1 :"+fil1);
+  //console.log('before directorypathReplace:'+files);
+  files=directorypathReplace(files,'./Client','server');
+  console.log("Inside write_file function value of files :"+files);
+  for(var i=0;i<fil1.length;i++)
+  {
+
+    //console.log("Inside write_file function value of files :"+files);
+    //console.log("Inside write_file function value of fil :"+fil1);
+    var file_path=fil1[i];var file_name=files[i].split('/').pop();
+    console.log('fileName:'+file_name);
+    var modified_file_name='';
+    var file_text=""
+    console.log("filepath: "+file_path);
+    file_text=fs.readFile(file_path,function(err,data)
+    {
+      if (err) throw err;
+      console.log(file_Name+" content is :"+data);
+      return data;
+    });
+    console.log('Inside write_file function with the filetext: '+file_text);
+    //Finds the artifact id and creates the name for it
+    modified_file_name=GetArtifactName(file_text,file_name);
+/*  // Working code of fs.writeline
+    fs.writeFile(server_path+"/"+file_name, file_text, function (err) {
+      if (err) throw err;
+      console.log('Saved!');
+    });
+*/
+
+    console.log('File Path='+file_path);
+    console.log('New Path='+files[i]+'/'+modified_file_name);
+
+    fs.copyFile(file_path, files[i]+'/'+modified_file_name, (err) => {
+      if (err) throw err;
+      console.log('Source file got copied to Destination path');
+    });
+
+    console.log('Renaming files file 1'+fil1[i]);
+    console.log('Renaming files file 2'+files[i]);
+    fs.renameSync(fil1[i],files[i]);
+  }
+
+}
+
+// Function to checking in i.e to copy the folders at the server side to client path
+function checkingIn(chkpath)
+{
+//chkpath is the path of the client local folder
+f_n_f=findFileAndFolder(server_path,'server')
+
+}
+
+
+const filteredTree2 = dirTree(server_path); //, { extensions: /\.txt/ }
+console.log(filteredTree2);
+
+//Function outdated
+//This function gives all the files in the directory
+// without accessing the folders in the list
+
+//const shell = require('shelljs');
+//shell.mkdir('-p', fullPath);
+
+********************************************************************************************
+Working Code (Extracted from createServerDirectory)
+
+for(var i=0;i<folders.length;i++)
+{
+  console.log(folders[i]);
+  //folders[i]=folders[i].trim().replace("./Client/Client1","./server/Client1");
+  folders[i]="server"+folders[i].split('./Client').pop();
+}
+*********************************************************************************************
+
+
+
+
+if(p+1==length_of_array)
+{
+  break;
+}
+else {
+
+  try {
+    console.log('First folder: '+strarr[p]);
+    console.log('2nd folder: '+strarr[p+1]);
+    console.log('combined folder: '+strarr[p]+'/'+strarr[p+1]);
+    console.log()
+    fs.mkdirSync(strarr[p]+'/'+strarr[p+1]);
+    count_change_dir=count_change_dir+1;
+    process.chdir(strarr[p]);
+  } catch(e) {
+    if (e.code = 'EEXIST') {throw e;}
+  }
+
+}
+
+
+
+
+
+
+
+//fs.mkdirSync(folder);
+/*
+for(var j=0;j<fold.length;j++)
+{
+  try {
+    console.log('D Path MIVAS: '+fold[j].toString());
+
+    fs.mkdirSync("F:\\important files\\Website practise\\Nodejs Code\\" + fold[j]);
+
+  }
+  catch (err) {
+    if (err.code === 'ENOENT') {
+      console.log('file or directory does not exist');
+    }
+  }
+}
+*/
+/*
+folders.forEach(function(err,fold){
+  fs.existsSync(fold,function(exists){
+    if(exists)
+    {
+      console.log("Checking the path : "+fold);
+      fs.mkdir(fold, callback);
+    }
+  });
+});
+*/
+
+
+
+
+fs.stat(directory, function(err, stats) {
+//Check if error defined and the error code is "not exists"
+if (err && err.errno === 34) {
+  //Create the directory, call the callback.
+  fs.mkdir(directory, callback);
+} else {
+  //just in case there was a different error:
+  callback(err)
+}
+
+console.log("Inside createServerDirectory : "+folders);
+let findFiles = require('file-regex')
+let pattern = '\.txt';
+
+findFiles( path, pattern, (err, files) => {
+   console.log(files);
+})
+
+fs.statSync(process.cwd()+folders[i].replace('/','\\'));
+console.log('file or directory exists');
+
+
+//function will check if a directory exists, and create it if it doesn't
+function checkDirectory(directory, callback) {
+fs.stat(directory, function(err, stats) {
+//Check if error defined and the error code is "not exists"
+if (err && err.errno === 34) {
+  //Create the directory, call the callback.
+  fs.mkdir(directory, callback);
+} else {
+  //just in case there was a different error:
+  callback(err)
+}
+});
+}
+
+
+
+const getDirectories = source =>
+  readdirSync(source, { withFileTypes: true })
+    .filter(dirent => dirent.isDirectory())
+    .map(dirent => dirent.name)
+
+    var result = files.filter(function(e, i) {
+      var filename=files[i];
+      if()
+      var filen=[]
+      filen[]
+      return
+    })
+
+var fs_xtra = require('fs-extra');
+
+fs.copySync(path.resolve(__dirname,'./mainisp.jpg'), './test/mainisp.jpg');
+
+
+/*
+const fs = require('fs');
+const path = require('path');
+
+let filename = 'mainisp.jpg';
+let src = path.join(__dirname, filename);
+let destDir = path.join(__dirname, 'test');
+*/
+/*
+fs.access(destDir, (err) => {
+  if(err)
+    fs.mkdirSync(destDir);
+
+  copyFile(src, path.join(destDir, filename));
+});
+*/
+/*
+function copyFile(src, dest) {
+
+  let readStream = fs.createReadStream(src);
+
+  readStream.once('error', (err) => {
+    console.log(err);
+  });
+
+  readStream.once('end', () => {
+    console.log('done copying');
+  });
+
+  readStream.pipe(fs.createWriteStream(dest));
+}
+*/
+
+
+
+fs.statSync(server_path+"\\branch\\branch.txt",function(err,data)
+{
+  if(err)
+  {
+      fs.writefile(server_path+"\\branch\\branch.txt","Branch1 -> "+client_path+" -> "+sManifestFileName,{ flag: 'a+' }, (err) => {})
+  }
+  else {
+    text = fs.readFileSync(server_path+"\\branch\\branch.txt","UTF8",function(data,err)
+    {
+        if(err) throw err;
+        return data
+    })
+    data=text.split(os.EOL)
+    text=text+os.EOL+"Branch"+(data.length+1)+" -> "+client_path+" -> "+sManifestFileName+os.EOL
+    fs.writefile(server_path+"\\branch\\branch.txt",text)
+  }
+});

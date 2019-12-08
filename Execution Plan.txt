@@ -1,0 +1,14 @@
+Steps to be done for final execution of the project
+
+
+1)Remove the hard code of the client folder (Asked by professor)
+2)Pass the client folder path from the UI to the server
+3)Set the project folder name as the last folder name
+4)While pushing the data to the server then check for the server path
+and add the project_name/...  to the server
+5)Change the make manifest file (remove the hard coded part of the client path)
+6)
+
+
+
+
